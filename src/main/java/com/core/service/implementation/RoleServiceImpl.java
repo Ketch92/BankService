@@ -19,7 +19,8 @@ public class RoleServiceImpl implements RoleService {
     
     @Override
     public Role getByName(String name) {
-        return roleRepository.getRoleByName(Role.RoleTitle.valueOf(name)).orElseThrow(() ->
+        return roleRepository.getRoleByRoleTitle(Role.RoleTitle.valueOf(name.toUpperCase()))
+                .orElseThrow(() ->
                 new DataProcessingException(String.format("No role with %s name", name)));
     }
 }

@@ -21,7 +21,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private RoleTitle role;
+    private RoleTitle roleTitle;
     
     public enum RoleTitle {
         USER, ADMIN

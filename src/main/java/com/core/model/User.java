@@ -27,5 +27,5 @@ public class User {
     private String password;
     @OneToMany
     @JoinColumn(name = "roles")
-    private Set<Role> rolesSet;
+    private Set<Role> roles;
 }
