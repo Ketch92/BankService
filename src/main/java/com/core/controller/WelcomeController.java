@@ -2,11 +2,11 @@ package com.core.controller;
 
 import com.core.model.Role;
 import com.core.model.User;
-import com.core.model.dto.UserRequestDto;
-import com.core.model.dto.UserResponseDto;
+import com.core.model.dto.user.UserRequestDto;
+import com.core.model.dto.user.UserResponseDto;
 import com.core.service.RoleService;
 import com.core.service.UserService;
-import com.core.service.mapper.UserMapper;
+import com.core.service.mapper.user.UserMapper;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/users")
+@RequestMapping("/test")
 @RestController
 @AllArgsConstructor
 public class WelcomeController {
