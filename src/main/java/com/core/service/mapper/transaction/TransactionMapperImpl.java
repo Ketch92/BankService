@@ -28,10 +28,8 @@ public class TransactionMapperImpl implements TransactionMapper {
         Transaction transaction = modelMapper.map(dto, Transaction.class);
         Account fromAccount = accountService.getByNumber(dto.getFromAccount());
         Account toAccount = accountService.getByNumber(dto.getToAccount());
-        Transaction.Type type = Transaction.Type.valueOf(dto.getType());
         transaction.setFromAccount(fromAccount);
         transaction.setToAccount(toAccount);
-        transaction.setType(type);
         return transaction;
     }
 }

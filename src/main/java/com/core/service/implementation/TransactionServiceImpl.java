@@ -26,7 +26,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction get(Long id) {
         return transactionRepository.findById(id).orElseThrow(() ->
-                new DataProcessingException(String.format("Transaction with id=%d wasn't found", id)));
+                new DataProcessingException(String.format("Transaction with id=%d wasn't found",
+                        id)));
     }
     
     @Override

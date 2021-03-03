@@ -5,6 +5,7 @@ import com.core.model.dto.user.UserRequestDto;
 import com.core.model.dto.user.UserResponseDto;
 import com.core.service.UserService;
 import com.core.service.mapper.user.UserMapper;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +24,14 @@ public class UserController {
     private final UserMapper mapper;
     
     @PostMapping
-    public UserResponseDto createNewUser(@RequestBody UserRequestDto requestDto) {
+    public UserResponseDto createNewUser(@RequestBody @Valid UserRequestDto requestDto) {
         User user = userService.saveOrUpdate(mapper.mapToEntity(requestDto));
         return mapper.mapToDto(user);
     }
     
     @PostMapping("/{id}")
-    public UserResponseDto updateUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
+    public UserResponseDto updateUser(@PathVariable Long id,
+                                      @RequestBody @Valid UserRequestDto requestDto) {
         User user = mapper.mapToEntity(requestDto);
         user.setId(id);
         return mapper.mapToDto(userService.saveOrUpdate(user));
