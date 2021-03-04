@@ -29,6 +29,6 @@ public class Transaction {
     private Type type;
     
     public enum Type {
-        INCOMING, OUTCOMING
+        IN_COMING, OUT_COMING, TOP_UP
     }
 }

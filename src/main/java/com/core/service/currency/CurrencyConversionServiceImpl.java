@@ -4,30 +4,32 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 import com.core.lib.ExternalApiRequestException;
 import com.core.model.Currency;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CurrencyConversionServiceImpl implements CurrencyConversionService {
-    public static final String CONNECTION_EXCEPTION_MESSAGE =
+    private static final String CONNECTION_EXCEPTION_MESSAGE =
             "Couldn't proceed due to error, "
             + "please check of URL you're requesting is valid!";
-    @Value("${currency-exchange-api_url-template}")
+    private static final String EXCHANGE_RESULT_VALUE = "result";
+    
+    @Value("${currency-exchange-api-url-template}")
     private String apiUrl;
     
     @Override
-    public BigDecimal convert(Currency fromCurrency, Currency toCurrency, BigDecimal amount) {
-        String uri = String.format(apiUrl, fromCurrency.name(), toCurrency.name(), amount.doubleValue());
+    public double convert(Currency fromCurrency, Currency toCurrency, double amount) {
+        String uri = String.format(apiUrl, fromCurrency.name(),
+                toCurrency.name(), amount);
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(uri))
@@ -36,12 +38,11 @@ public class CurrencyConversionServiceImpl implements CurrencyConversionService 
                     .build();
             HttpResponse<String> response = HttpClient.newBuilder()
                     .build().send(request, HttpResponse.BodyHandlers.ofString());
-            String s = response.body();
-    
+            HashMap<String, Object> responseValues
+                    = new ObjectMapper().readValue(response.body(), HashMap.class);
+            return (double) responseValues.get(EXCHANGE_RESULT_VALUE);
         } catch (URISyntaxException | InterruptedException | IOException e) {
             throw new ExternalApiRequestException(CONNECTION_EXCEPTION_MESSAGE);
         }
-    
-        return null;
     }
 }

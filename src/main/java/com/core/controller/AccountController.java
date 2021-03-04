@@ -1,15 +1,16 @@
 package com.core.controller;
 
 import com.core.model.Account;
-import com.core.model.Transaction;
 import com.core.model.dto.account.AccountRequestDto;
 import com.core.model.dto.account.AccountResponseDto;
+import com.core.model.dto.account.TopUpRequestDto;
 import com.core.model.dto.transaction.TransactionRequestDto;
 import com.core.model.dto.transaction.TransactionResponseDto;
 import com.core.service.AccountService;
 import com.core.service.TransactionService;
 import com.core.service.mapper.account.AccountMapper;
 import com.core.service.mapper.transaction.TransactionMapper;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +37,7 @@ public class AccountController {
     @PostMapping
     public AccountResponseDto createNewAccount(@RequestBody @Valid AccountRequestDto dto) {
         Account account = accountMapper.mapToEntity(dto);
-        accountService.create(account);
+        accountService.createOrUpdate(account);
         return accountMapper.mapToDto(account);
     }
     
@@ -47,12 +49,14 @@ public class AccountController {
     }
     
     @PostMapping("/transfer")
-    public TransactionResponseDto transfer(@RequestBody TransactionRequestDto dto) {
-        Transaction transfer = accountService
+    public List<TransactionResponseDto> transfer(@RequestBody TransactionRequestDto dto) {
+        return accountService
                 .transfer(accountService.getByNumber(dto.getFromAccount()),
                         accountService.getByNumber(dto.getToAccount()),
-                        dto.getAmount());
-        return transactionMapper.mapToDto(transfer);
+                        BigDecimal.valueOf(dto.getAmount()))
+                .stream()
+                .map(transactionMapper::mapToDto)
+                .collect(Collectors.toList());
     }
     
     @GetMapping("/{accountNumber}")
@@ -72,6 +76,13 @@ public class AccountController {
                 .stream()
                 .map(transactionMapper::mapToDto)
                 .collect(Collectors.toList());
+    }
+    
+    @PutMapping("/{accountNumber}")
+    public String topUpBalance(@PathVariable Long accountNumber, @RequestBody TopUpRequestDto dto) {
+        Account account = accountService.topUpBalance(accountService.getByNumber(accountNumber),
+                BigDecimal.valueOf(dto.getTopUpAmount()));
+        return account.getBalance().toString().concat(" ").concat(account.getCurrency().name());
     }
     
     @PatchMapping("/{id}")

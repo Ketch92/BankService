@@ -1,6 +1,5 @@
 package com.core.controller;
 
-import com.core.model.Role;
 import com.core.model.User;
 import com.core.model.dto.user.UserRequestDto;
 import com.core.model.dto.user.UserResponseDto;

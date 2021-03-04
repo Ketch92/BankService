@@ -4,5 +4,5 @@ import com.core.model.Currency;
 import java.math.BigDecimal;
 
 public interface CurrencyConversionService {
-    BigDecimal convert(Currency fromCurrency, Currency toCurrency, BigDecimal amount);
+    double convert(Currency fromCurrency, Currency toCurrency, double amount);
 }
