@@ -49,7 +49,7 @@ public class AccountController {
     }
     
     @PostMapping("/transfer")
-    public List<TransactionResponseDto> transfer(@RequestBody TransactionRequestDto dto) {
+    public List<TransactionResponseDto> transfer(@RequestBody @Valid TransactionRequestDto dto) {
         return accountService
                 .transfer(accountService.getByNumber(dto.getFromAccount()),
                         accountService.getByNumber(dto.getToAccount()),
@@ -79,7 +79,7 @@ public class AccountController {
     }
     
     @PutMapping("/{accountNumber}")
-    public String topUpBalance(@PathVariable Long accountNumber, @RequestBody TopUpRequestDto dto) {
+    public String topUpBalance(@PathVariable Long accountNumber, @RequestBody @Valid TopUpRequestDto dto) {
         Account account = accountService.topUpBalance(accountService.getByNumber(accountNumber),
                 BigDecimal.valueOf(dto.getTopUpAmount()));
         return account.getBalance().toString().concat(" ").concat(account.getCurrency().name());
