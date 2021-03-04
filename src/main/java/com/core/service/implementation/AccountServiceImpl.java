@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public List<Transaction> transfer(Account fromAccount, Account toAccount, BigDecimal amount) {
-        if (fromAccount.getBalance().compareTo(amount) >= 0) {
+        if (fromAccount.getBalance().compareTo(amount) <= 0) {
             throw new IllegalTransferException(TRANSFER_EXCEPTION_MESSAGE);
         }
         BigDecimal convertedAmount =
@@ -74,9 +74,10 @@ public class AccountServiceImpl implements AccountService {
                         accountNumber)));
     }
     
+    @Transactional
     @Override
-    public boolean blockAccount(Long accountNumber) {
-        return accountRepository.blockAccount(accountNumber);
+    public void blockAccount(Long accountNumber) {
+        accountRepository.blockAccount(accountNumber);
     }
     
     private List<Transaction> getTransactions(Account from, Account to,

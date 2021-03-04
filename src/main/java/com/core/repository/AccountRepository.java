@@ -14,5 +14,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     
     @Modifying
     @Query("update Account a set a.isActive = false where a.accountNumber = ?1")
-    boolean blockAccount(Long accountNumber);
+    void blockAccount(Long accountNumber);
 }

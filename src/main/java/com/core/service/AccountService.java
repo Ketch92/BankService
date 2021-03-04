@@ -16,5 +16,5 @@ public interface AccountService {
     
     Account getByNumber(Long accountNumber);
     
-    boolean blockAccount(Long id);
+    void blockAccount(Long accountNumber);
 }

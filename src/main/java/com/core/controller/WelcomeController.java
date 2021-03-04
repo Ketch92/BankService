@@ -1,7 +1,6 @@
 package com.core.controller;
 
 import com.core.model.Currency;
-import com.core.model.Role;
 import com.core.model.User;
 import com.core.service.RoleService;
 import com.core.service.UserService;
@@ -22,18 +21,12 @@ public class WelcomeController {
     
     @GetMapping("/inject")
     public String dataInjector() {
-        Role user = new Role();
-        user.setRoleTitle(Role.RoleTitle.USER);
-        roleService.save(user);
-        Role admin = new Role();
-        admin.setRoleTitle(Role.RoleTitle.ADMIN);
-        roleService.save(admin);
         User user1 = new User();
         user1.setName("Oleh");
         user1.setPassword("1234");
         user1.setPhoneNumber("4321");
         user1.setDateOfBirth(LocalDate.of(1992, 8, 19));
-        user1.setRoles(Set.of(admin));
+        user1.setRoles(Set.of());
         userService.saveOrUpdate(user1);
         return "INJECTED";
     }

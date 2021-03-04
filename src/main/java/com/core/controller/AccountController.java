@@ -85,11 +85,9 @@ public class AccountController {
         return account.getBalance().toString().concat(" ").concat(account.getCurrency().name());
     }
     
-    @PatchMapping("/{id}")
-    public String blockAccount(@PathVariable Long id) {
-        if (accountService.blockAccount(id)) {
-            return "The account was blocked!";
-        }
-        return "Couldn't block account!";
+    @PatchMapping("/{accountNumber}")
+    public String blockAccount(@PathVariable Long accountNumber) {
+        accountService.blockAccount(accountNumber);
+        return "The account was blocked!";
     }
 }
