@@ -2,6 +2,7 @@ package com.core.service.implementation;
 
 import com.core.lib.DataProcessingException;
 import com.core.model.Account;
+import com.core.model.Currency;
 import com.core.model.Transaction;
 import com.core.repository.AccountRepository;
 import com.core.repository.TransactionRepository;

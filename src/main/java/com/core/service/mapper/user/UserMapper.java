@@ -3,8 +3,8 @@ package com.core.service.mapper.user;
 import com.core.model.User;
 import com.core.model.dto.user.UserRequestDto;
 import com.core.model.dto.user.UserResponseDto;
-import com.core.service.ToDtoMapper;
-import com.core.service.ToEntityMapper;
+import com.core.service.mapper.ToDtoMapper;
+import com.core.service.mapper.ToEntityMapper;
 
 public interface UserMapper
         extends ToDtoMapper<UserResponseDto, User>,

@@ -57,7 +57,8 @@ public class AccountController {
     
     @GetMapping("/{accountNumber}")
     public String getBalance(@PathVariable Long accountNumber) {
-        return accountService.getByNumber(accountNumber).getBalance().toString();
+        Account byNumber = accountService.getByNumber(accountNumber);
+        return byNumber.getBalance().toString().concat(" ").concat(byNumber.getCurrency().name());
     }
     
     @GetMapping("/history/{accountNumber}")

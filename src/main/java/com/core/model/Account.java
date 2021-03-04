@@ -20,7 +20,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "account_number")
+    @Column(name = "account_number", unique = true)
     private Long accountNumber;
     @Enumerated(EnumType.STRING)
     private Currency currency;
