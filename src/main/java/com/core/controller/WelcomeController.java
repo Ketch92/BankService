@@ -44,7 +44,7 @@ public class WelcomeController {
     }
     
     @GetMapping("convert")
-    public String testExchangeAPI(@RequestParam double amount) {
+    public String testExchangeApi(@RequestParam double amount) {
         return currencyService.convert(Currency.USD, Currency.UAH, amount) + "";
     }
 }

@@ -40,8 +40,10 @@ public class AccountServiceImpl implements AccountService {
         if (fromAccount.getBalance().compareTo(amount) >= 0) {
             throw new IllegalTransferException(TRANSFER_EXCEPTION_MESSAGE);
         }
-        BigDecimal convertedAmount = BigDecimal.valueOf(currencyService.convert(fromAccount.getCurrency(),
+        BigDecimal convertedAmount =
+                BigDecimal.valueOf(currencyService.convert(fromAccount.getCurrency(),
                 toAccount.getCurrency(), amount.doubleValue()));
+        
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
         toAccount.setBalance(toAccount.getBalance().add(convertedAmount));
         accountRepository.save(fromAccount);
