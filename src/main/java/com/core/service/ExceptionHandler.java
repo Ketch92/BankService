@@ -39,13 +39,11 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     
     @org.springframework.web.bind.annotation.ExceptionHandler({DataProcessingException.class,
             ExternalApiRequestException.class, IllegalTransferException.class})
-    public ResponseEntity<Object> customExceptionsHandler(Exception ex,
-                                                          HttpHeaders headers,
-                                                          HttpStatus status) {
+    public ResponseEntity<Object> customExceptionsHandler(Exception ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
-        body.put("status", status.value());
+        body.put("status", HttpStatus.BAD_REQUEST);
         body.put("message", ex.getMessage());
-        return new ResponseEntity<>(body, headers, status);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
