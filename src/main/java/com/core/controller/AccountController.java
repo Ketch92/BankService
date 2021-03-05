@@ -79,7 +79,8 @@ public class AccountController {
     }
     
     @PutMapping("/{accountNumber}")
-    public String topUpBalance(@PathVariable Long accountNumber, @RequestBody @Valid TopUpRequestDto dto) {
+    public String topUpBalance(@PathVariable Long accountNumber,
+                               @RequestBody @Valid TopUpRequestDto dto) {
         Account account = accountService.topUpBalance(accountService.getByNumber(accountNumber),
                 BigDecimal.valueOf(dto.getTopUpAmount()));
         return account.getBalance().toString().concat(" ").concat(account.getCurrency().name());
