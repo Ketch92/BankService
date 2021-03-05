@@ -1,5 +1,6 @@
 package com.core.controller;
 
+import com.core.lib.DataProcessingException;
 import com.core.model.User;
 import com.core.model.dto.user.UserRequestDto;
 import com.core.model.dto.user.UserResponseDto;
@@ -49,7 +50,10 @@ public class UserController {
     
     @GetMapping("/by-phone")
     public UserResponseDto getUserByPhoneNumber(@RequestParam("phone") String phoneNumber) {
-        return mapper.mapToDto(userService.getByPhoneNumber(phoneNumber));
+        return mapper.mapToDto(userService.getByPhoneNumber(phoneNumber)
+                .orElseThrow(() ->
+                new DataProcessingException(String.format("User with %s phone "
+                                                          + "number wasn't found.", phoneNumber))));
     }
     
     @DeleteMapping("/{id}")
