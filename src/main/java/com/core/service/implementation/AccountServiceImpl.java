@@ -1,7 +1,6 @@
 package com.core.service.implementation;
 
 import com.core.lib.DataProcessingException;
-import com.core.lib.IllegalTransferException;
 import com.core.model.Account;
 import com.core.model.Transaction;
 import com.core.repository.AccountRepository;
@@ -37,9 +36,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public List<Transaction> transfer(Account fromAccount, Account toAccount, BigDecimal amount) {
-        if (fromAccount.getBalance().compareTo(amount) <= 0) {
-            throw new IllegalTransferException(TRANSFER_EXCEPTION_MESSAGE);
-        }
         BigDecimal convertedAmount =
                 BigDecimal.valueOf(currencyService.convert(fromAccount.getCurrency(),
                 toAccount.getCurrency(), amount.doubleValue()));
