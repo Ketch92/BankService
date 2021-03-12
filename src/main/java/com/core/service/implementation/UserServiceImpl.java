@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public User get(Long id) {
-        return userRepository.getById(id).orElseThrow(() ->
+        return userRepository.findById(id).orElseThrow(() ->
                 new DataProcessingException(String.format("User with id=%d wasn't found.", id)));
     }
     
