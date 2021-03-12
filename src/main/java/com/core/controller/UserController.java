@@ -25,31 +25,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
     private final RoleService roleService;
-    private final UserMapper mapper;
+    private final UserMapper userMapper;
     
     @PostMapping
     public UserResponseDto createNewUser(@RequestBody @Valid UserRequestDto requestDto) {
-        User user = userService.saveOrUpdate(mapper.mapToEntity(requestDto));
+        User user = userService.saveOrUpdate(userMapper.mapToEntity(requestDto));
         user.setRoles(Set.of(roleService.getByName("USER")));
-        return mapper.mapToDto(user);
+        return userMapper.mapToDto(user);
     }
     
     @PutMapping("/{id}")
     public UserResponseDto updateUser(@PathVariable Long id,
                                       @RequestBody @Valid UserRequestDto requestDto) {
-        User user = mapper.mapToEntity(requestDto);
+        User user = userMapper.mapToEntity(requestDto);
         user.setId(id);
-        return mapper.mapToDto(userService.saveOrUpdate(user));
+        return userMapper.mapToDto(userService.saveOrUpdate(user));
     }
     
     @GetMapping("/{id}")
     public UserResponseDto getUser(@PathVariable Long id) {
-        return mapper.mapToDto(userService.get(id));
+        return userMapper.mapToDto(userService.get(id));
     }
     
     @GetMapping("/by-phone")
     public UserResponseDto getUserByPhoneNumber(@RequestParam("phone") String phoneNumber) {
-        return mapper.mapToDto(userService.getByPhoneNumber(phoneNumber));
+        return userMapper.mapToDto(userService.getByPhoneNumber(phoneNumber));
     }
     
     @DeleteMapping("/{id}")
