@@ -1,5 +1,6 @@
 package com.core.controller;
 
+import com.core.lib.DataProcessingException;
 import com.core.model.User;
 import com.core.model.dto.user.UserRequestDto;
 import com.core.model.dto.user.UserResponseDto;
