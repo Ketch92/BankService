@@ -10,5 +10,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> getUserByPhoneNumber(String number);
     
     @Query("select u from User u left join fetch u.roles where u.id = ?1")
-    Optional<User> getById(Long id);
+    Optional<User> findById(Long id);
 }

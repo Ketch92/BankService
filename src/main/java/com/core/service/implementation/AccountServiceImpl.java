@@ -60,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
         topUp.setToAccount(account);
         topUp.setFromAccount(account);
         topUp.setAmount(amount);
-        topUp.setType(Transaction.Type.TOP_UP);
+        topUp.setType(Transaction.Type.TOPUP);
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
         transactionRepository.save(topUp);
@@ -86,14 +86,14 @@ public class AccountServiceImpl implements AccountService {
         Transaction outcoming = new Transaction();
         outcoming.setFromAccount(from);
         outcoming.setToAccount(to);
-        outcoming.setType(Transaction.Type.OUT_COMING);
+        outcoming.setType(Transaction.Type.OUTGOING);
         outcoming.setAmount(amount);
         outcoming.setTimeStamp(stamp);
         
         Transaction incoming = new Transaction();
         incoming.setFromAccount(from);
         incoming.setToAccount(to);
-        incoming.setType(Transaction.Type.IN_COMING);
+        incoming.setType(Transaction.Type.INCOMING);
         incoming.setTimeStamp(stamp);
         incoming.setAmount(convertedAmount);
         return List.of(incoming, outcoming);
