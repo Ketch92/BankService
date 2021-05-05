@@ -1,38 +1,26 @@
 package com.core.controller;
 
-import com.core.model.Role;
+import com.core.model.Currency;
 import com.core.model.User;
-import com.core.model.dto.UserRequestDto;
-import com.core.model.dto.UserResponseDto;
 import com.core.service.RoleService;
 import com.core.service.UserService;
-import com.core.service.mapper.UserMapper;
+import com.core.service.currency.CurrencyConversionService;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/users")
 @RestController
 @AllArgsConstructor
 public class WelcomeController {
     private final UserService userService;
     private final RoleService roleService;
-    private final UserMapper mapper;
+    private final CurrencyConversionService currencyService;
     
     @GetMapping("/inject")
     public String dataInjector() {
-        Role user = new Role();
-        user.setRoleTitle(Role.RoleTitle.USER);
-        roleService.save(user);
-        Role admin = new Role();
-        admin.setRoleTitle(Role.RoleTitle.ADMIN);
-        roleService.save(admin);
         User user1 = new User();
         user1.setName("Oleh");
         user1.setPassword("1234");
@@ -48,14 +36,8 @@ public class WelcomeController {
         return "Welcome to our bank!";
     }
     
-    @GetMapping("/{id}")
-    public UserResponseDto getUserById(@PathVariable Long id) {
-        return mapper.mapToDto(userService.get(id));
-    }
-    
-    @PostMapping
-    public UserResponseDto createNewUser(@RequestBody UserRequestDto dto) {
-        User user = userService.saveOrUpdate(mapper.mapToEntity(dto));
-        return mapper.mapToDto(user);
+    @GetMapping("convert")
+    public String testExchangeApi(@RequestParam double amount) {
+        return currencyService.convert(Currency.USD, Currency.UAH, amount) + "";
     }
 }

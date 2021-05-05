@@ -1,4 +1,4 @@
-package com.core.service;
+package com.core.service.mapper;
 
 public interface ToDtoMapper<D, E> {
     
