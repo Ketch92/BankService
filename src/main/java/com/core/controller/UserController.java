@@ -50,7 +50,7 @@ public class UserController {
     
     @GetMapping("/by-phone")
     public UserResponseDto getUserByPhoneNumber(@RequestParam("phone") String phoneNumber) {
-        return userMapper.mapToDto(userService.getByPhoneNumber(phoneNumber));
+        return userMapper.mapToDto(userService.getByPhoneNumber(phoneNumber).get());
     }
     
     @DeleteMapping("/{id}")
