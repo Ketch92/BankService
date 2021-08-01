@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class WelcomeController {
     private final UserService userService;
-    private final RoleService roleService;
     private final CurrencyConversionService currencyService;
-    
+
     @GetMapping("/inject")
     public String dataInjector() {
         User user1 = new User();
@@ -30,12 +29,12 @@ public class WelcomeController {
         userService.saveOrUpdate(user1);
         return "INJECTED";
     }
-    
+
     @GetMapping
     public String getWelcomeMassage() {
         return "Welcome to our bank!";
     }
-    
+
     @GetMapping("convert")
     public String testExchangeApi(@RequestParam double amount) {
         return currencyService.convert(Currency.USD, Currency.UAH, amount) + "";
