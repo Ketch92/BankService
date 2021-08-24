@@ -51,7 +51,9 @@ public class AccountController {
         List<AccountResponseDto> accounts = accountService.getAllByPhone(phoneNumber).stream()
                 .map(accountMapper::mapToDto)
                 .collect(Collectors.toList());
-        log.info("Found accounts by number {}: {}", phoneNumber, accounts.stream().map(AccountResponseDto::getAccountNumber).collect(Collectors.toList()));
+        log.info("Found accounts by number {}: {}", phoneNumber, accounts.stream()
+                .map(AccountResponseDto::getAccountNumber)
+                .collect(Collectors.toList()));
         return accounts;
     }
 

@@ -2,7 +2,6 @@ package com.core.controller;
 
 import com.core.model.Currency;
 import com.core.model.User;
-import com.core.service.RoleService;
 import com.core.service.UserService;
 import com.core.service.currency.CurrencyConversionService;
 import java.time.LocalDate;
