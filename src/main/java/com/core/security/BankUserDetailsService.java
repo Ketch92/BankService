@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BankUserDetailsService implements UserDetailsService {
-    public static final String USER_AUTHENTICATION_EXCEPTION_MESSAGE
+    public static final String AUTHENTICATION_FAIL_MESSAGE
             = "Such user isn't registered! Or input data aren't correct!";
     private final UserService userService;
     
@@ -21,7 +21,7 @@ public class BankUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
         User user = userService.getByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new UserAuthenticationException(USER_AUTHENTICATION_EXCEPTION_MESSAGE));
+                .orElseThrow(() -> new UserAuthenticationException(AUTHENTICATION_FAIL_MESSAGE));
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getPhoneNumber())
                 .password(user.getPassword())
