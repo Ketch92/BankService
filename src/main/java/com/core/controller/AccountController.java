@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/accounts")
 @AllArgsConstructor
@@ -33,21 +35,28 @@ public class AccountController {
     private final AccountMapper accountMapper;
     private final TransactionService transactionService;
     private final TransactionMapper transactionMapper;
-    
+
     @PostMapping
     public AccountResponseDto createNewAccount(@RequestBody @Valid AccountRequestDto dto) {
+        log.info("Received request to register account {}", dto.getAccountNumber());
         Account account = accountMapper.mapToEntity(dto);
         accountService.createOrUpdate(account);
+        log.info("Created account {}, with number {}", account.getId(), account.getAccountNumber());
         return accountMapper.mapToDto(account);
     }
-    
+
     @GetMapping("/by-phone")
     public List<AccountResponseDto> getAllUsersAccounts(@RequestParam("phone") String phoneNumber) {
-        return accountService.getAllByPhone(phoneNumber).stream()
+        log.info("Requested accounts on phone {}", phoneNumber);
+        List<AccountResponseDto> accounts = accountService.getAllByPhone(phoneNumber).stream()
                 .map(accountMapper::mapToDto)
                 .collect(Collectors.toList());
+        log.info("Found accounts by number {}: {}", phoneNumber, accounts.stream()
+                .map(AccountResponseDto::getAccountNumber)
+                .collect(Collectors.toList()));
+        return accounts;
     }
-    
+
     @PostMapping("/transfer")
     public List<TransactionResponseDto> transfer(@RequestBody @Valid TransactionRequestDto dto) {
         return accountService
@@ -58,13 +67,13 @@ public class AccountController {
                 .map(transactionMapper::mapToDto)
                 .collect(Collectors.toList());
     }
-    
+
     @GetMapping("/{accountNumber}")
     public String getBalance(@PathVariable Long accountNumber) {
         Account byNumber = accountService.getByNumber(accountNumber);
         return byNumber.getBalance().toString().concat(" ").concat(byNumber.getCurrency().name());
     }
-    
+
     @GetMapping("/history/{accountNumber}")
     public List<TransactionResponseDto> getAccountHistory(@PathVariable Long accountNumber,
                                                           @RequestParam(value = "page",
@@ -77,7 +86,7 @@ public class AccountController {
                 .map(transactionMapper::mapToDto)
                 .collect(Collectors.toList());
     }
-    
+
     @PutMapping("/{accountNumber}")
     public String topUpBalance(@PathVariable Long accountNumber,
                                @RequestBody @Valid TopUpRequestDto dto) {
@@ -85,7 +94,7 @@ public class AccountController {
                 BigDecimal.valueOf(dto.getTopUpAmount()));
         return account.getBalance().toString().concat(" ").concat(account.getCurrency().name());
     }
-    
+
     @PatchMapping("/{accountNumber}")
     public String blockAccount(@PathVariable Long accountNumber) {
         accountService.blockAccount(accountNumber);

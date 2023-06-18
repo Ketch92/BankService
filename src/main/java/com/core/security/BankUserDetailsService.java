@@ -17,11 +17,15 @@ public class BankUserDetailsService implements UserDetailsService {
     public BankUserDetailsService(UserService userService) {
         this.userService = userService;
     }
-    
+
+    private static UserAuthenticationException get() {
+        return new UserAuthenticationException(USER_AUTHENTICATION_EXCEPTION_MESSAGE);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
         User user = userService.getByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new UserAuthenticationException(USER_AUTHENTICATION_EXCEPTION_MESSAGE));
+                .orElseThrow(BankUserDetailsService::get);
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getPhoneNumber())
                 .password(user.getPassword())

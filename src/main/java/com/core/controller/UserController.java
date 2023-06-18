@@ -1,6 +1,5 @@
 package com.core.controller;
 
-import com.core.lib.DataProcessingException;
 import com.core.model.User;
 import com.core.model.dto.user.UserRequestDto;
 import com.core.model.dto.user.UserResponseDto;
@@ -27,14 +26,14 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
     private final UserMapper userMapper;
-    
+
     @PostMapping
     public UserResponseDto createNewUser(@RequestBody @Valid UserRequestDto requestDto) {
         User user = userService.saveOrUpdate(userMapper.mapToEntity(requestDto));
         user.setRoles(Set.of(roleService.getByName("USER")));
         return userMapper.mapToDto(user);
     }
-    
+
     @PutMapping("/{id}")
     public UserResponseDto updateUser(@PathVariable Long id,
                                       @RequestBody @Valid UserRequestDto requestDto) {
@@ -42,17 +41,17 @@ public class UserController {
         user.setId(id);
         return userMapper.mapToDto(userService.saveOrUpdate(user));
     }
-    
+
     @GetMapping("/{id}")
     public UserResponseDto getUser(@PathVariable Long id) {
         return userMapper.mapToDto(userService.get(id));
     }
-    
+
     @GetMapping("/by-phone")
     public UserResponseDto getUserByPhoneNumber(@RequestParam("phone") String phoneNumber) {
         return userMapper.mapToDto(userService.getByPhoneNumber(phoneNumber).get());
     }
-    
+
     @DeleteMapping("/{id}")
     public void removeUserById(@PathVariable Long id) {
         userService.remove(id);

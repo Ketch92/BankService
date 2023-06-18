@@ -14,10 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder encoder;
-    
-    public SecurityConfig(@Qualifier("bankUserDetailsService") UserDetailsService userDetailsService,
+
+    public SecurityConfig(@Qualifier("bankUserDetailsService") UserDetailsService detailsService,
                           PasswordEncoder encoder) {
-        this.userDetailsService = userDetailsService;
+        this.userDetailsService = detailsService;
         this.encoder = encoder;
     }
     
